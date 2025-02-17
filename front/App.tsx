@@ -1,31 +1,11 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-} from 'react-native';
-
+import { NavigationContainer } from '@react-navigation/native';
+import RootNavigator from './src/navigations/root/RootNavigator';
 
 export default function App(): React.JSX.Element {
-
-  return (
-    <View style={styles.container}>
-      <Text>Hello World</Text>
-    </View>
-  );
+	return (
+		<NavigationContainer>
+			<RootNavigator />
+		</NavigationContainer>
+	);
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
-
-
-
-
-
-
-
