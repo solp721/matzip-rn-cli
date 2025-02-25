@@ -1,9 +1,10 @@
 import React from 'react';
-import AuthStackNavigator from '../stack/AuthStackNavigator';
-import MainDrawerNavigator from '../drawer/MainDrawerNavigator';
+import AuthStackNavigator from '@/navigations/stack/AuthStackNavigator';
+import MainDrawerNavigator from '@/navigations/drawer/MainDrawerNavigator';
+import { useAuth } from '@/hooks/queries/useAuth';
 
 export default function RootNavigator() {
-	const isLoggedIn = false;
+	const { isLogin } = useAuth();
 
-	return <>{isLoggedIn ? <MainDrawerNavigator /> : <AuthStackNavigator />}</>;
+	return <>{isLogin ? <MainDrawerNavigator /> : <AuthStackNavigator />}</>;
 }
