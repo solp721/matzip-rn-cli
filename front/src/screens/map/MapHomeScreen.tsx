@@ -1,7 +1,13 @@
-import React, { useRef } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
-import { colors } from '@/constants';
+import React, { useRef, useState } from 'react';
+import { Pressable, StyleSheet, View, Alert } from 'react-native';
+import MapView, {
+	PROVIDER_GOOGLE,
+	Marker,
+	LongPressEvent,
+	LatLng,
+	Callout,
+} from 'react-native-maps';
+import { alerts, colors, mapNavigations } from '@/constants';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -11,16 +17,27 @@ import { CompositeNavigationProp } from '@react-navigation/native';
 import { MainDrawerParamList } from '@/navigations/drawer/MainDrawerNavigator';
 import useUserLocation from '@/hooks/useUserLocation';
 import usePermission from '@/hooks/usePermission';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { IconProps } from 'react-native-vector-icons/Icon';
+import { mapStyle } from '@/style/mapStyle';
+import CustomMarker from '@/components/CustomMarker';
+
 type Navigation = CompositeNavigationProp<
 	StackNavigationProp<MapStackParamList>,
 	DrawerNavigationProp<MainDrawerParamList>
 >;
+
+const IonIcon = Ionicons as unknown as React.ComponentType<IconProps>;
+const MaterialIcon = MaterialIcons as unknown as React.ComponentType<IconProps>;
 
 export default function MapHomeScreen() {
 	const inset = useSafeAreaInsets();
 	const navigation = useNavigation<Navigation>();
 	const { userLocation, isUserLocationError } = useUserLocation();
 	const mapRef = useRef<MapView | null>(null);
+	const [selectLocation, setSelectLocation] = useState<LatLng | null>();
+
 	usePermission('LOCATION');
 
 	const handlePressUserLocation = () => {
@@ -35,6 +52,23 @@ export default function MapHomeScreen() {
 		});
 	};
 
+	const handleLongPressMapView = ({ nativeEvent }: LongPressEvent) => {
+		setSelectLocation(nativeEvent.coordinate);
+	};
+
+	const handlePressAddPost = () => {
+		if (!selectLocation) {
+			return Alert.alert(
+				alerts.NOT_SELECTED_LOCATION.TITLE,
+				alerts.NOT_SELECTED_LOCATION.DESCRIPTION,
+			);
+		}
+		navigation.navigate(mapNavigations.ADD_POST, {
+			location: selectLocation,
+		});
+		setSelectLocation(null);
+	};
+
 	return (
 		<>
 			<MapView
@@ -44,16 +78,43 @@ export default function MapHomeScreen() {
 				showsUserLocation
 				followsUserLocation
 				showsMyLocationButton={false}
-			/>
+				customMapStyle={mapStyle}
+				onLongPress={handleLongPressMapView}
+			>
+				<CustomMarker
+					coordinate={{
+						latitude: 35.14525467924572,
+						longitude: 129.00755713706002,
+					}}
+					color="RED"
+					score={5}
+				/>
+				<CustomMarker
+					coordinate={{
+						latitude: 35.13525467924572,
+						longitude: 129.00755713706002,
+					}}
+					color="BLUE"
+					score={3}
+				/>
+				{selectLocation && (
+					<Callout>
+						<Marker coordinate={selectLocation} />
+					</Callout>
+				)}
+			</MapView>
 			<Pressable
 				style={[styles.drawerButton, { top: inset.top || 20 }]}
 				onPress={() => navigation.openDrawer()}
 			>
-				<Text>서랍</Text>
+				<IonIcon name="menu" size={25} color={colors.WHITE} />
 			</Pressable>
 			<View style={styles.buttonList}>
+				<Pressable style={styles.mapButton} onPress={handlePressAddPost}>
+					<MaterialIcon name="add" size={25} color={colors.WHITE} />
+				</Pressable>
 				<Pressable style={styles.mapButton} onPress={handlePressUserLocation}>
-					<Text>내위치</Text>
+					<MaterialIcon name="my-location" size={25} color={colors.WHITE} />
 				</Pressable>
 			</View>
 		</>
