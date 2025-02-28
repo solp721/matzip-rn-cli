@@ -6,6 +6,7 @@ const authNavigations = {
 
 const mapNavigations = {
 	MAP_HOME: 'MapHome',
+	ADD_POST: 'AddPost',
 } as const;
 
 const mainDrawerNavigations = {
