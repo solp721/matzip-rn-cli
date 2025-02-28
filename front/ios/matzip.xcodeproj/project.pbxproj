@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		0C80B921A6F3F58F76C31292 /* libPods-matzip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-matzip.a */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
+		54D71F042D6E159600AFF433 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 54D71F032D6E159600AFF433 /* Ionicons.ttf */; };
+		54D71F062D6E15A300AFF433 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 54D71F052D6E15A300AFF433 /* MaterialIcons.ttf */; };
+		54D71F082D6E15AD00AFF433 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 54D71F072D6E15AD00AFF433 /* Octicons.ttf */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		EDEE246152E929501EB50925 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
@@ -20,6 +23,9 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = matzip/Info.plist; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = matzip/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-matzip.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-matzip.debug.xcconfig"; path = "Target Support Files/Pods-matzip/Pods-matzip.debug.xcconfig"; sourceTree = "<group>"; };
+		54D71F032D6E159600AFF433 /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Ionicons.ttf; sourceTree = "<group>"; };
+		54D71F052D6E15A300AFF433 /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MaterialIcons.ttf; sourceTree = "<group>"; };
+		54D71F072D6E15AD00AFF433 /* Octicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Octicons.ttf; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-matzip.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-matzip.release.xcconfig"; path = "Target Support Files/Pods-matzip/Pods-matzip.release.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-matzip.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-matzip.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = matzip/AppDelegate.swift; sourceTree = "<group>"; };
@@ -42,6 +48,7 @@
 		13B07FAE1A68108700A75B9A /* matzip */ = {
 			isa = PBXGroup;
 			children = (
+				54D71F022D6E14D300AFF433 /* Fonts */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				761780EC2CA45674006654EE /* AppDelegate.swift */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
@@ -58,6 +65,16 @@
 				5DCACB8F33CDC322A6C60F78 /* libPods-matzip.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		54D71F022D6E14D300AFF433 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				54D71F032D6E159600AFF433 /* Ionicons.ttf */,
+				54D71F052D6E15A300AFF433 /* MaterialIcons.ttf */,
+				54D71F072D6E15AD00AFF433 /* Octicons.ttf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -160,6 +177,9 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				54D71F062D6E15A300AFF433 /* MaterialIcons.ttf in Resources */,
+				54D71F042D6E159600AFF433 /* Ionicons.ttf in Resources */,
+				54D71F082D6E15AD00AFF433 /* Octicons.ttf in Resources */,
 				EDEE246152E929501EB50925 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
