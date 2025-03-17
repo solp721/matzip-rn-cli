@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { AuthStackParamList } from '@/navigations/stack/AuthStackNavigator';
-import CustomButton from '@/components/CustomButton';
+import CustomButton from '@/components/common/CustomButton';
 import { authNavigations } from '@/constants/navigations';
 
 type AuthHomeScreenProps = StackScreenProps<
