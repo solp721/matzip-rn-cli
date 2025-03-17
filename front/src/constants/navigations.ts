@@ -15,4 +15,14 @@ const mainDrawerNavigations = {
 	CALENDAR: 'Calendar',
 } as const;
 
-export { authNavigations, mapNavigations, mainDrawerNavigations };
+const feedNavigations = {
+	FEED_HOME: 'FeedHome',
+	FEED_DETAIL: 'FeedDetail',
+} as const;
+
+export {
+	authNavigations,
+	mapNavigations,
+	mainDrawerNavigations,
+	feedNavigations,
+};
