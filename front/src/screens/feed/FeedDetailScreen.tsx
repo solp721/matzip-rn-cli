@@ -34,6 +34,8 @@ import useLocationStore from '@/store/useLocationStore';
 import useModal from '@/hooks/useModal';
 import FeedDetailOption from '@/components/feed/FeedDetailOption';
 import useDetailStore from '@/store/useDetailPostStore';
+import useMutateFavoritePost from '@/hooks/queries/useMutateFavoritePost';
+
 type FeedDetailScreenProps = CompositeScreenProps<
 	StackScreenProps<FeedStackParamList, typeof feedNavigations.FEED_DETAIL>,
 	DrawerScreenProps<MainDrawerParamList>
@@ -52,6 +54,7 @@ export default function FeedDetailScreen({
 	const { setMoveLocation } = useLocationStore();
 	const detailOption = useModal();
 	const { setDetailPost } = useDetailStore();
+	const favoriteMutation = useMutateFavoritePost();
 
 	useEffect(() => {
 		if (post) {
@@ -69,6 +72,10 @@ export default function FeedDetailScreen({
 		navigation.navigate(mainDrawerNavigations.HOME, {
 			screen: mapNavigations.MAP_HOME,
 		});
+	};
+
+	const handlePressFavorite = () => {
+		favoriteMutation.mutate(post.id);
 	};
 
 	return (
@@ -182,8 +189,13 @@ export default function FeedDetailScreen({
 							pressed && styles.bookmarkPressedContainer,
 							styles.bookmarkContainer,
 						]}
+						onPress={handlePressFavorite}
 					>
-						<OctIcon name="star-fill" size={30} color={colors.GRAY_300} />
+						<OctIcon
+							name="star-fill"
+							size={30}
+							color={post.isFavorite ? colors.YELLOW_500 : colors.GRAY_300}
+						/>
 					</Pressable>
 					<CustomButton
 						label="위치보기"
