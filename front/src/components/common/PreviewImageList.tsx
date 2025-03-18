@@ -11,12 +11,15 @@ import React from 'react';
 import IonIcons from 'react-native-vector-icons/Ionicons';
 import { colors } from '@/constants';
 import { IconProps } from 'react-native-vector-icons/Icon';
-
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { FeedStackParamList } from '@/navigations/stack/FeedStackNavigator';
+import { feedNavigations } from '@/constants';
 interface PreviewImageListProps {
 	imageUris: ImageUri[];
 	onDelete: (uri: string) => void;
 	onChangeOrder: (fromIndex: number, toIndex: number) => void;
 	showOption?: boolean;
+	zoomEnable?: boolean;
 }
 
 const IonIcon = IonIcons as unknown as React.ComponentType<IconProps>;
@@ -26,14 +29,23 @@ export default function PreviewImageList({
 	onDelete,
 	onChangeOrder,
 	showOption = false,
+	zoomEnable = false,
 }: PreviewImageListProps) {
+	const navigation = useNavigation<NavigationProp<FeedStackParamList>>();
+
+	const handlePressImage = (index: number) => {
+		if (zoomEnable) {
+			navigation.navigate(feedNavigations.IMAGE_ZOOM, { index });
+		}
+	};
+
 	return (
 		<ScrollView horizontal showsHorizontalScrollIndicator={false}>
 			<View style={styles.container}>
 				{imageUris.map(({ uri }, index) => {
 					return (
 						<View key={uri} style={styles.imageContainer}>
-							<Pressable>
+							<Pressable onPress={() => handlePressImage(index)}>
 								<Image
 									style={styles.image}
 									source={{
