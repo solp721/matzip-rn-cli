@@ -47,26 +47,27 @@ export default function PostForm({ location, isEdit = false }: PostFormProps) {
 	const { detailPost } = useDetailStore();
 	const isEditMode = isEdit && detailPost;
 	const updatePost = useMutateUpdatePost();
+
 	const addPost = useForm({
 		initialValues: {
-			title: isEditMode ? detailPost?.title : '',
-			description: isEditMode ? detailPost?.description : '',
+			title: isEditMode ? detailPost.title : '',
+			description: isEditMode ? detailPost.description : '',
 		},
 		validate: validateAddPost,
 	});
 
 	const [markerColor, setMarkerColor] = useState<MarkerColor>(
-		isEditMode ? detailPost?.color : 'RED',
+		isEditMode ? detailPost.color : 'RED',
 	);
-	const [score, setScore] = useState(isEditMode ? detailPost?.score : 5);
+	const [score, setScore] = useState(isEditMode ? detailPost.score : 5);
 	const [date, setDate] = useState(
 		isEditMode ? new Date(String(detailPost?.date)) : new Date(),
 	);
 	const [isPickedDate, setIsPickedDate] = useState(false);
 	const imagePicker = useImagePicker({
-		initialImages: isEditMode ? detailPost?.images : [],
+		initialImages: isEditMode ? detailPost.images : [],
 	});
-	const dateOption = useModal();
+	const datePickerModal = useModal();
 
 	usePermission('PHOTO');
 
@@ -82,7 +83,7 @@ export default function PostForm({ location, isEdit = false }: PostFormProps) {
 
 	const handleConfirmDate = () => {
 		setIsPickedDate(true);
-		dateOption.hide();
+		datePickerModal.hide();
 	};
 
 	const handleSubmit = () => {
@@ -102,9 +103,7 @@ export default function PostForm({ location, isEdit = false }: PostFormProps) {
 					body,
 				},
 				{
-					onSuccess: () => {
-						navigation.goBack();
-					},
+					onSuccess: () => navigation.goBack(),
 				},
 			);
 			return;
@@ -113,12 +112,7 @@ export default function PostForm({ location, isEdit = false }: PostFormProps) {
 		createPost.mutate(
 			{ address, ...location, ...body },
 			{
-				onSuccess: () => {
-					navigation.goBack();
-				},
-				onError: error => {
-					console.error('게시물 등록 실패:', error);
-				},
+				onSuccess: () => navigation.goBack(),
 			},
 		);
 	};
@@ -149,7 +143,7 @@ export default function PostForm({ location, isEdit = false }: PostFormProps) {
 								? getDateWithSeparator(date, '.')
 								: '날짜 선택'
 						}
-						onPress={dateOption.show}
+						onPress={datePickerModal.show}
 					/>
 					<InputField
 						placeholder="제목을 입력하세요"
@@ -186,7 +180,7 @@ export default function PostForm({ location, isEdit = false }: PostFormProps) {
 					</View>
 					<DatePickerOption
 						date={date}
-						isVisible={dateOption.isVisible}
+						isVisible={datePickerModal.isVisible}
 						onChangeDate={handleChangeDate}
 						onConfirmDate={handleConfirmDate}
 					/>
