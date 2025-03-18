@@ -163,6 +163,7 @@ export default function FeedDetailScreen({
 					<View style={styles.imageContentsContainer}>
 						<PreviewImageList
 							imageUris={post.images}
+							zoomEnable
 							onDelete={() => {}}
 							onChangeOrder={() => {}}
 						/>
