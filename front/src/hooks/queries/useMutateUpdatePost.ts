@@ -1,4 +1,4 @@
-import { updatePost } from '@/api/post';
+import { updatePost } from '@/api';
 import queryClient from '@/api/queryClient';
 import { queryKeys } from '@/constants';
 import { UseMutationCustomOptions } from '@/types';
