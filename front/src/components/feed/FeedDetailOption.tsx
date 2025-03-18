@@ -1,11 +1,12 @@
 import React from 'react';
-import { CompoundOption } from '../common/CompoundOption';
+import { Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/core';
+import { StackNavigationProp } from '@react-navigation/stack';
+
+import { FeedStackParamList } from '@/navigations/stack/FeedStackNavigator';
 import useMutateDeletePost from '@/hooks/queries/useMutateDeletePost';
 import useDetailStore from '@/store/useDetailPostStore';
-import { useNavigation } from '@react-navigation/native';
-import { FeedStackParamList } from '@/navigations/stack/FeedStackNavigator';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { Alert } from 'react-native';
+import { CompoundOption } from '../common/CompoundOption';
 import { alerts, feedNavigations } from '@/constants';
 
 interface FeedDetailOptionProps {
@@ -17,12 +18,14 @@ export default function FeedDetailOption({
 	isVisible,
 	hideOption,
 }: FeedDetailOptionProps) {
-	const { detailPost } = useDetailStore();
-	const deletePost = useMutateDeletePost();
 	const navigation = useNavigation<StackNavigationProp<FeedStackParamList>>();
+	const deletePost = useMutateDeletePost();
+	const { detailPost } = useDetailStore();
 
 	const handleDeletePost = () => {
-		if (!detailPost) return;
+		if (!detailPost) {
+			return;
+		}
 
 		Alert.alert(alerts.DELETE_POST.TITLE, alerts.DELETE_POST.DESCRIPTION, [
 			{
@@ -45,7 +48,9 @@ export default function FeedDetailOption({
 	};
 
 	const handleEditPost = () => {
-		if (!detailPost) return;
+		if (!detailPost) {
+			return;
+		}
 
 		navigation.navigate(feedNavigations.EDIT_POST, {
 			location: {
