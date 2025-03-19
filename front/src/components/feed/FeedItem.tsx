@@ -17,18 +17,22 @@ import { FeedStackParamList } from '@/navigations/stack/FeedStackNavigator';
 
 interface FeedItemProps {
 	post: ResponsePost;
+	onPress?: () => void;
 }
 
 type Navigation = StackNavigationProp<FeedStackParamList>;
 
-export default function FeedItem({ post }: FeedItemProps) {
-
+export default function FeedItem({ post, onPress }: FeedItemProps) {
 	const navigation = useNavigation<Navigation>();
 
 	const handlePressFeed = () => {
-		navigation.navigate(feedNavigations.FEED_DETAIL, {
-			id: post.id,
-		});
+		if (onPress) {
+			onPress();
+		} else {
+			navigation.navigate(feedNavigations.FEED_DETAIL, {
+				id: post.id,
+			});
+		}
 	};
 
 	return (
