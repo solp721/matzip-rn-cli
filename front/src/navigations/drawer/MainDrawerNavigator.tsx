@@ -9,15 +9,14 @@ import { RouteProp } from '@react-navigation/native';
 import { IconProps } from 'react-native-vector-icons/Icon';
 import { Dimensions } from 'react-native';
 import CustomDrawerContent from './CustomDrawerContent';
-import FeedStackNavigator, {
-	FeedStackParamList,
-} from '@/navigations/stack/FeedStackNavigator';
+import FeedTabNavigator, { FeedTabParamList } from '../tab/FeedTabNavigator';
+import FeedHomeHeaderLeft from '@/components/feed/FeedHomeHeaderLeft';
 
 const MaterialIcon = MaterialIcons as unknown as React.ComponentType<IconProps>;
 
 export type MainDrawerParamList = {
 	[mainDrawerNavigations.HOME]: NavigatorScreenParams<MapStackParamList>;
-	[mainDrawerNavigations.FEED]: NavigatorScreenParams<FeedStackParamList>;
+	[mainDrawerNavigations.FEED]: NavigatorScreenParams<FeedTabParamList>;
 	[mainDrawerNavigations.CALENDAR]: undefined;
 };
 
@@ -81,7 +80,7 @@ export default function MainDrawerNavigator() {
 			/>
 			<Drawer.Screen
 				name={mainDrawerNavigations.FEED}
-				component={FeedStackNavigator}
+				component={FeedTabNavigator}
 				options={{
 					title: '피드',
 				}}
@@ -91,6 +90,8 @@ export default function MainDrawerNavigator() {
 				component={CalendarHomeScreen}
 				options={{
 					title: '캘린더',
+					headerShown: true,
+					headerLeft: () => <FeedHomeHeaderLeft />,
 				}}
 			/>
 		</Drawer.Navigator>
