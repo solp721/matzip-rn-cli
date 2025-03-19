@@ -16,6 +16,7 @@ export type FeedStackParamList = {
 	[feedNavigations.FEED_HOME]: undefined;
 	[feedNavigations.FEED_DETAIL]: {
 		id: number;
+		previousTab?: string;
 	};
 	[feedNavigations.EDIT_POST]: {
 		location: LatLng;
