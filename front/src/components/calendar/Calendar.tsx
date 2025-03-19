@@ -5,17 +5,29 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { IconProps } from 'react-native-vector-icons/Icon';
 import DayOfWeek from './DayOfWeeks';
-import { MonthYear } from '@/utils/date';
+import { isSameAsCurrentDate, MonthYear } from '@/utils/date';
+import { FlatList } from 'react-native-gesture-handler';
+import DateBox from './DateBox';
+
 const Ionicon = Ionicons as unknown as React.ComponentType<IconProps>;
 const MaterialIcon = MaterialIcons as unknown as React.ComponentType<IconProps>;
 
-interface CalendarProps {
+interface CalendarProps<T> {
 	monthYear: MonthYear;
+	selectedDate: number;
+	schedules: Record<number, T>;
 	onChangeMonth: (increment: number) => void;
+	onPressDate: (date: number) => void;
 }
 
-export default function Calendar({ monthYear, onChangeMonth }: CalendarProps) {
-	const { month, year } = monthYear;
+export default function Calendar<T>({
+	monthYear,
+	onChangeMonth,
+	selectedDate,
+	onPressDate,
+	schedules,
+}: CalendarProps<T>) {
+	const { month, year, firstDow, lastDate } = monthYear;
 	return (
 		<>
 			<View style={styles.headerContainer}>
@@ -41,6 +53,25 @@ export default function Calendar({ monthYear, onChangeMonth }: CalendarProps) {
 				</Pressable>
 			</View>
 			<DayOfWeek />
+			<View style={styles.bodyContainer}>
+				<FlatList
+					data={Array.from({ length: lastDate + firstDow }, (_, i) => ({
+						id: i,
+						date: i - firstDow + 1,
+					}))}
+					renderItem={({ item }) => (
+						<DateBox
+							date={item.date}
+							isToday={isSameAsCurrentDate(year, month, item.date)}
+							hasSchedule={Boolean(schedules[item.date])}
+							selectedDate={selectedDate}
+							onPressDate={onPressDate}
+						/>
+					)}
+					keyExtractor={item => String(item.id)}
+					numColumns={7}
+				/>
+			</View>
 		</>
 	);
 }
@@ -65,5 +96,10 @@ const styles = StyleSheet.create({
 		fontSize: 18,
 		fontWeight: '500',
 		color: colors.BLACK,
+	},
+	bodyContainer: {
+		borderBottomWidth: StyleSheet.hairlineWidth,
+		borderBottomColor: colors.GRAY_300,
+		backgroundColor: colors.GRAY_100,
 	},
 });
