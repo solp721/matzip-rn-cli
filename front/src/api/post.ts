@@ -47,8 +47,8 @@ const updatePost = async ({
 	return data;
 };
 
-const getFavoritePost = async (page = 1): Promise<ResponsePost[]> => {
-	const { data } = await axiosInstance.get(`/favorite/my?page=${page}`);
+const getFavoritePosts = async (page = 1): Promise<ResponsePost[]> => {
+	const { data } = await axiosInstance.get(`/favorites/my?page=${page}`);
 
 	return data;
 };
@@ -66,7 +66,7 @@ export {
 	deletePost,
 	updatePost,
 	updateFavoritePost,
-	getFavoritePost,
+	getFavoritePosts,
 };
 export type {
 	ResponsePost,
