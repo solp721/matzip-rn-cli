@@ -1,5 +1,5 @@
 import { colors } from '@/constants';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, StyleSheet, Pressable, Text } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -8,6 +8,10 @@ import DayOfWeek from './DayOfWeeks';
 import { isSameAsCurrentDate, MonthYear } from '@/utils/date';
 import { FlatList } from 'react-native-gesture-handler';
 import DateBox from './DateBox';
+import YearSelector from './YearSelector';
+import { useNavigation } from '@react-navigation/native';
+import useModal from '@/hooks/useModal';
+import CalendarHomeHeaderRight from './CalendarHomeHeaderRight';
 
 const Ionicon = Ionicons as unknown as React.ComponentType<IconProps>;
 const MaterialIcon = MaterialIcons as unknown as React.ComponentType<IconProps>;
@@ -18,6 +22,7 @@ interface CalendarProps<T> {
 	schedules: Record<number, T>;
 	onChangeMonth: (increment: number) => void;
 	onPressDate: (date: number) => void;
+	moveToToday: () => void;
 }
 
 export default function Calendar<T>({
@@ -26,8 +31,23 @@ export default function Calendar<T>({
 	selectedDate,
 	onPressDate,
 	schedules,
+	moveToToday,
 }: CalendarProps<T>) {
 	const { month, year, firstDow, lastDate } = monthYear;
+	const navigation = useNavigation();
+	const yearSelector = useModal();
+
+	const handleChangeYear = (selectYear: number) => {
+		onChangeMonth((selectYear - year) * 12);
+		yearSelector.hide();
+	};
+
+	useEffect(() => {
+		navigation.setOptions({
+			headerRight: () => CalendarHomeHeaderRight(moveToToday),
+		});
+	}, [moveToToday, navigation]);
+
 	return (
 		<>
 			<View style={styles.headerContainer}>
@@ -37,7 +57,10 @@ export default function Calendar<T>({
 				>
 					<Ionicon name="arrow-back" size={25} color={colors.BLACK} />
 				</Pressable>
-				<Pressable style={styles.monthYearContainer}>
+				<Pressable
+					style={styles.monthYearContainer}
+					onPress={yearSelector.show}
+				>
 					<Text style={styles.titleText}>{`${year}년 ${month}월`}</Text>
 					<MaterialIcon
 						name="keyboard-arrow-down"
@@ -72,6 +95,12 @@ export default function Calendar<T>({
 					numColumns={7}
 				/>
 			</View>
+			<YearSelector
+				isVisible={yearSelector.isVisible}
+				currentYear={year}
+				onChangeYear={handleChangeYear}
+				hide={yearSelector.hide}
+			/>
 		</>
 	);
 }
