@@ -4,7 +4,7 @@ import useMutateImages from './queries/useMutateImages';
 import { useState } from 'react';
 import { ImageUri } from '@/types';
 import { Alert } from 'react-native';
-
+import Toast from 'react-native-toast-message';
 type UseImagePickerProps = {
 	initialImages: ImageUri[];
 };
@@ -52,7 +52,12 @@ export default function useImagePicker({
 			})
 			.catch(error => {
 				if (error.code !== 'E_PICKER_CANCELLED') {
-					//에러
+					Toast.show({
+						type: 'error',
+						text1: '갤러리를 열 수 없습니다.',
+						text2: '설정에서 갤러리 접근 권한을 확인해주세요.',
+						position: 'bottom',
+					});
 				}
 			});
 	};
