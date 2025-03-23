@@ -1,5 +1,6 @@
 const authNavigations = {
 	AUTH_HOME: 'AuthHome',
+	KAKAO: 'Kakao',
 	LOGIN: 'Login',
 	SIGNUP: 'Signup',
 } as const;
