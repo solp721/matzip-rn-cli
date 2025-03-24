@@ -14,12 +14,19 @@ import {
 import { colors } from '@/constants';
 import { useAuth } from '@/hooks/queries/useAuth';
 
+interface ProfileData {
+	email?: string;
+	nickname?: string;
+	imageUri?: string | null;
+	kakaoImageUri?: string | null;
+}
+
 export default function CustomDrawerContent(
 	props: DrawerContentComponentProps,
 ) {
 	const { getProfileQuery, logoutMutation } = useAuth();
 	const { email, nickname, imageUri, kakaoImageUri } =
-		getProfileQuery.data || {};
+		(getProfileQuery.data as ProfileData) || {};
 
 	const handleLogout = () => {
 		logoutMutation.mutate(null);
@@ -51,12 +58,14 @@ export default function CustomDrawerContent(
 				</View>
 				<DrawerItemList {...props} />
 			</DrawerContentScrollView>
-			<Pressable
-				style={{ alignItems: 'flex-end', padding: 10 }}
-				onPress={handleLogout}
-			>
-				<Text>로그아웃</Text>
-			</Pressable>
+			<SafeAreaView>
+				<Pressable
+					style={{ alignItems: 'flex-end', paddingRight: 10 }}
+					onPress={handleLogout}
+				>
+					<Text>로그아웃</Text>
+				</Pressable>
+			</SafeAreaView>
 		</SafeAreaView>
 	);
 }
