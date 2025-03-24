@@ -7,6 +7,7 @@ import {
 	postSignup,
 	kakaoLogin,
 	ResponseToken,
+	appleLogin,
 } from '@/api/auth';
 import {
 	UseMutationCustomOptions,
@@ -57,6 +58,10 @@ function useEmailLogin(mutationOptions?: UseMutationCustomOptions) {
 
 function useKakaoLogin(mutationOptions?: UseMutationCustomOptions) {
 	return useLogin(kakaoLogin, mutationOptions);
+}
+
+function useAppleLogin(mutationOptions?: UseMutationCustomOptions) {
+	return useLogin(appleLogin, mutationOptions);
 }
 
 function useGetRefreshToken() {
@@ -118,7 +123,7 @@ function useAuth() {
 	const loginMutation = useEmailLogin();
 	const kakaoLoginMutation = useKakaoLogin();
 	const logoutMutation = useLogout();
-
+	const appleLoginMutation = useAppleLogin();
 	return {
 		signupMutation,
 		refreshTokenQuery,
@@ -127,6 +132,7 @@ function useAuth() {
 		loginMutation,
 		kakaoLoginMutation,
 		logoutMutation,
+		appleLoginMutation,
 	};
 }
 
