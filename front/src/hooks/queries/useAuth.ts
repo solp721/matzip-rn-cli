@@ -8,6 +8,7 @@ import {
 	kakaoLogin,
 	ResponseToken,
 	appleLogin,
+	editProfile,
 } from '@/api/auth';
 import {
 	UseMutationCustomOptions,
@@ -99,15 +100,27 @@ function useGetProfile(queryOptions?: UseQueryCustomOptions) {
 	});
 }
 
+function useUpdateProfile(mutationOptions?: UseMutationCustomOptions) {
+	return useMutation({
+		mutationFn: editProfile,
+		onSuccess: newProfile => {
+			queryClient.setQueryData(
+				[queryKeys.AUTH, queryKeys.GET_PROFILE],
+				newProfile,
+			);
+			queryClient.invalidateQueries({ queryKey: ['auth', 'getProfile'] });
+		},
+		...mutationOptions,
+	});
+}
+
 function useLogout(mutationOptions?: UseMutationCustomOptions) {
 	return useMutation({
 		mutationFn: logout,
 		onSuccess: () => {
 			removeHeader('Authorization');
 			removeEncryptedStorage(stroageKeys.REFRESH_TOKEN);
-		},
-		onSettled: () => {
-			queryClient.invalidateQueries({ queryKey: [queryKeys.AUTH] });
+			queryClient.resetQueries({ queryKey: [queryKeys.AUTH] });
 		},
 		...mutationOptions,
 	});
@@ -124,6 +137,8 @@ function useAuth() {
 	const kakaoLoginMutation = useKakaoLogin();
 	const logoutMutation = useLogout();
 	const appleLoginMutation = useAppleLogin();
+	const profileMutation = useUpdateProfile();
+
 	return {
 		signupMutation,
 		refreshTokenQuery,
@@ -133,6 +148,7 @@ function useAuth() {
 		kakaoLoginMutation,
 		logoutMutation,
 		appleLoginMutation,
+		profileMutation,
 	};
 }
 
