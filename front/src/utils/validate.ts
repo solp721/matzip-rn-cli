@@ -1,3 +1,7 @@
+function isBlank(value: string) {
+	return value.trim() === '';
+}
+
 type UserInformation = {
 	email: string;
 	password: string;
@@ -49,11 +53,23 @@ function validateAddPost(values: { title: string; description: string }) {
 		description: '',
 	};
 
-	if (values.title.trim() === '') {
+	if (isBlank(values.title)) {
 		errors.title = '제목은 1~30자 이내여야 합니다.';
 	}
 
 	return errors;
 }
 
-export { validateLogin, validateSignup, validateAddPost };
+function validateEditProfile(values: { nickname: string }) {
+	const errors = {
+		nickname: '',
+	};
+
+	if (isBlank(values.nickname)) {
+		errors.nickname = '닉네임은 1~10자 이내여야 합니다.';
+	}
+
+	return errors;
+}
+
+export { validateLogin, validateSignup, validateAddPost, validateEditProfile };
