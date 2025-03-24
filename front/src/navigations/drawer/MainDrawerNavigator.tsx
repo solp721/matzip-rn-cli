@@ -11,13 +11,15 @@ import { Dimensions } from 'react-native';
 import CustomDrawerContent from './CustomDrawerContent';
 import FeedTabNavigator, { FeedTabParamList } from '../tab/FeedTabNavigator';
 import FeedHomeHeaderLeft from '@/components/feed/FeedHomeHeaderLeft';
-
+import SettingStackNavigator from '@/navigations/stack/SettingStackNavigator';
+import { SettingStackParamList } from '@/navigations/stack/SettingStackNavigator';
 const MaterialIcon = MaterialIcons as unknown as React.ComponentType<IconProps>;
 
 export type MainDrawerParamList = {
 	[mainDrawerNavigations.HOME]: NavigatorScreenParams<MapStackParamList>;
 	[mainDrawerNavigations.FEED]: NavigatorScreenParams<FeedTabParamList>;
 	[mainDrawerNavigations.CALENDAR]: undefined;
+	[mainDrawerNavigations.SETTING]: NavigatorScreenParams<SettingStackParamList>;
 };
 
 const Drawer = createDrawerNavigator<MainDrawerParamList>();
@@ -36,6 +38,10 @@ function DrawerIcons(route: RouteProp<MainDrawerParamList>, focused: boolean) {
 		}
 		case mainDrawerNavigations.CALENDAR: {
 			iconName = 'event';
+			break;
+		}
+		case mainDrawerNavigations.SETTING: {
+			iconName = 'settings';
 			break;
 		}
 	}
@@ -92,6 +98,17 @@ export default function MainDrawerNavigator() {
 					title: '캘린더',
 					headerShown: true,
 					headerLeft: () => <FeedHomeHeaderLeft />,
+				}}
+			/>
+			<Drawer.Screen
+				name={mainDrawerNavigations.SETTING}
+				component={SettingStackNavigator}
+				options={{
+					title: '설정',
+					headerShown: false,
+					drawerItemStyle: {
+						height: 0,
+					},
 				}}
 			/>
 		</Drawer.Navigator>
