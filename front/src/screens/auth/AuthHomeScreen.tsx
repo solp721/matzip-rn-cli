@@ -7,6 +7,7 @@ import {
 	Dimensions,
 	Pressable,
 	Text,
+	Platform,
 } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { AuthStackParamList } from '@/navigations/stack/AuthStackNavigator';
@@ -15,14 +16,52 @@ import { authNavigations } from '@/constants/navigations';
 import { IconProps } from 'react-native-vector-icons/Icon';
 import IonIcons from 'react-native-vector-icons/Ionicons';
 import { colors } from '@/constants';
+import appleAuth, {
+	AppleButton,
+} from '@invertase/react-native-apple-authentication';
+import { useAuth } from '@/hooks/queries/useAuth';
+import Toast from 'react-native-toast-message';
 
 const IonIcon = IonIcons as unknown as React.ComponentType<IconProps>;
+
 type AuthHomeScreenProps = StackScreenProps<
 	AuthStackParamList,
 	typeof authNavigations.AUTH_HOME
 >;
 
 export default function AuthHomeScreen({ navigation }: AuthHomeScreenProps) {
+	const { appleLoginMutation } = useAuth();
+
+	const handlePressAppleLogin = async () => {
+		try {
+			const { identityToken, fullName } = await appleAuth.performRequest({
+				requestedOperation: appleAuth.Operation.LOGIN,
+				requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+			});
+
+			if (identityToken) {
+				appleLoginMutation.mutate({
+					identityToken,
+					appId: 'org.reactjs.native.example.matzip',
+					nickname: fullName?.givenName || null,
+				});
+			}
+		} catch (error: unknown) {
+			if (
+				error instanceof Error &&
+				'code' in error &&
+				error.code !== appleAuth.Error.CANCELED
+			) {
+				Toast.show({
+					type: 'error',
+					position: 'bottom',
+					text1: '개발자가 그지라서 ㅠㅠ',
+					text2: '애플 로그인 연동할 돈이 없어요 ㅠㅠ',
+				});
+			}
+		}
+	};
+
 	return (
 		<SafeAreaView style={styles.container}>
 			<View style={styles.imageContainer}>
@@ -33,6 +72,15 @@ export default function AuthHomeScreen({ navigation }: AuthHomeScreenProps) {
 				/>
 			</View>
 			<View style={styles.buttonContainer}>
+				{Platform.OS === 'ios' && (
+					<AppleButton
+						buttonStyle={AppleButton.Style.BLACK}
+						buttonType={AppleButton.Type.SIGN_IN}
+						style={styles.appleButton}
+						cornerRadius={3}
+						onPress={handlePressAppleLogin}
+					/>
+				)}
 				<CustomButton
 					label="카카오 로그인하기"
 					onPress={() => navigation.navigate(authNavigations.KAKAO)}
@@ -85,5 +133,9 @@ const styles = StyleSheet.create({
 		fontWeight: '500',
 		padding: 10,
 		color: colors.BLACK,
+	},
+	appleButton: {
+		width: Dimensions.get('screen').width - 60,
+		height: 45,
 	},
 });
