@@ -10,6 +10,7 @@ import { IconProps } from 'react-native-vector-icons/Icon';
 import OctIcons from 'react-native-vector-icons/Octicons';
 import DarkModeOption from '@/components/setting/DarkModeOption';
 import useThemeStorage from '@/hooks/useThemeStorage';
+import MapLegendOption from '@/components/setting/MapLegendOption';
 const OctIcon = OctIcons as unknown as React.ComponentType<IconProps>;
 
 type SettingHomeScreenProps = StackScreenProps<SettingStackParamList>;
@@ -20,6 +21,7 @@ export default function SettingHomeScreen({
 	const { theme } = useThemeStorage();
 	const { logoutMutation } = useAuth();
 	const darkModeOption = useModal();
+	const mapLegendOption = useModal();
 
 	const handlePressEditProfile = () => {
 		navigation.navigate(settingNavigations.EDIT_PROFILE);
@@ -44,6 +46,7 @@ export default function SettingHomeScreen({
 					onPress={handlePressEditCategory}
 				/>
 				<SettingItem title="테마 설정" onPress={darkModeOption.show} />
+				<SettingItem title="범례 표시" onPress={mapLegendOption.show} />
 				<View style={styles.space} />
 				<SettingItem
 					title="로그아웃"
@@ -57,6 +60,10 @@ export default function SettingHomeScreen({
 			<DarkModeOption
 				isVisible={darkModeOption.isVisible}
 				hideOption={darkModeOption.hide}
+			/>
+			<MapLegendOption
+				isVisible={mapLegendOption.isVisible}
+				hideOption={mapLegendOption.hide}
 			/>
 		</SafeAreaView>
 	);
