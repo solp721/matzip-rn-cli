@@ -1,3 +1,5 @@
+import { Category } from '@/types';
+
 function isBlank(value: string) {
 	return value.trim() === '';
 }
@@ -72,4 +74,28 @@ function validateEditProfile(values: { nickname: string }) {
 	return errors;
 }
 
-export { validateLogin, validateSignup, validateAddPost, validateEditProfile };
+function validateCategory(values: Category) {
+	const errors = {
+		RED: '',
+		YELLOW: '',
+		GREEN: '',
+		BLUE: '',
+		PURPLE: '',
+	};
+
+	['RED', 'YELLOW', 'GREEN', 'BLUE', 'PURPLE'].forEach(color => {
+		if (isBlank(values[color as keyof Category])) {
+			errors[color as keyof typeof errors] = '카테고리를 입력해주세요.';
+		}
+	});
+
+	return errors;
+}
+
+export {
+	validateLogin,
+	validateSignup,
+	validateAddPost,
+	validateEditProfile,
+	validateCategory,
+};
