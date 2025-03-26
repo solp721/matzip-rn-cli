@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ImageUri } from '@/types';
+import { ImageUri, ThemeMode } from '@/types';
 import {
 	View,
 	Image,
@@ -16,6 +16,7 @@ import IonIcons from 'react-native-vector-icons/Ionicons';
 import { IconProps } from 'react-native-vector-icons/Icon';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
+import useThemeStorage from '@/hooks/useThemeStorage';
 
 const IonIcon = IonIcons as unknown as React.ComponentType<IconProps>;
 
@@ -34,6 +35,8 @@ export default function ImageCarousel({
 	const navigation = useNavigation();
 	const [page, setPage] = useState(pressedIndex);
 	const [initialIndex, setInitialIndex] = useState(pressedIndex);
+	const { theme } = useThemeStorage();
+	const styles = styling(theme);
 
 	const handleScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
 		const newPage = Math.round(e.nativeEvent.contentOffset.x / deviceWidth);
@@ -48,7 +51,7 @@ export default function ImageCarousel({
 					navigation.goBack();
 				}}
 			>
-				<IonIcon name="arrow-back" size={30} color={colors.WHITE} />
+				<IonIcon name="arrow-back" size={30} color={colors[theme].WHITE} />
 			</Pressable>
 			<FlatList
 				data={images}
@@ -96,40 +99,41 @@ export default function ImageCarousel({
 	);
 }
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		alignItems: 'center',
-		backgroundColor: colors.WHITE,
-	},
-	image: {
-		width: '100%',
-		height: '100%',
-	},
-	backButton: {
-		position: 'absolute',
-		left: 20,
-		zIndex: 1,
-		backgroundColor: colors.PINK_700,
-		height: 40,
-		width: 40,
-		borderRadius: 40,
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	pageDotContainer: {
-		position: 'absolute',
-		flexDirection: 'row',
-		alignItems: 'center',
-	},
-	pageDot: {
-		margin: 4,
-		backgroundColor: colors.GRAY_200,
-		width: 8,
-		height: 8,
-		borderRadius: 4,
-	},
-	currentPageDot: {
-		backgroundColor: colors.PINK_700,
-	},
-});
+const styling = (theme: ThemeMode) =>
+	StyleSheet.create({
+		container: {
+			flex: 1,
+			alignItems: 'center',
+			backgroundColor: colors[theme].WHITE,
+		},
+		image: {
+			width: '100%',
+			height: '100%',
+		},
+		backButton: {
+			position: 'absolute',
+			left: 20,
+			zIndex: 1,
+			backgroundColor: colors[theme].PINK_700,
+			height: 40,
+			width: 40,
+			borderRadius: 40,
+			justifyContent: 'center',
+			alignItems: 'center',
+		},
+		pageDotContainer: {
+			position: 'absolute',
+			flexDirection: 'row',
+			alignItems: 'center',
+		},
+		pageDot: {
+			margin: 4,
+			backgroundColor: colors[theme].GRAY_200,
+			width: 8,
+			height: 8,
+			borderRadius: 4,
+		},
+		currentPageDot: {
+			backgroundColor: colors[theme].PINK_700,
+		},
+	});

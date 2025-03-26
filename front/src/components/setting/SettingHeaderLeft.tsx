@@ -8,6 +8,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { SettingStackParamList } from '@/navigations/stack/SettingStackNavigator';
 import { MainDrawerParamList } from '@/navigations/drawer/MainDrawerNavigator';
 import { CompositeNavigationProp } from '@react-navigation/native';
+import useThemeStorage from '@/hooks/useThemeStorage';
 
 const IonIcon = IonIcons as unknown as React.ComponentType<IconProps>;
 
@@ -21,13 +22,15 @@ type SettingHeaderLeftProps = {
 export default function SettingHeaderLeft({
 	navigation,
 }: SettingHeaderLeftProps) {
+	const { theme } = useThemeStorage();
+
 	return (
 		<HeaderButton
 			icon={
 				<IonIcon
 					name="menu"
 					size={24}
-					color={colors.BLACK}
+					color={colors[theme].BLACK}
 					onPress={() => navigation.openDrawer()}
 				/>
 			}

@@ -10,6 +10,8 @@ import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { FeedTabParamList } from '@/navigations/tab/FeedTabNavigator';
 import { FeedStackParamList } from '@/navigations/stack/FeedStackNavigator';
+import useThemeStorage from '@/hooks/useThemeStorage';
+import { ThemeMode } from '@/types';
 
 type FeedNavigationProp = CompositeNavigationProp<
 	BottomTabNavigationProp<FeedTabParamList>,
@@ -18,6 +20,8 @@ type FeedNavigationProp = CompositeNavigationProp<
 
 export default function FeedFavoriteList() {
 	const navigation = useNavigation<FeedNavigationProp>();
+	const { theme } = useThemeStorage();
+	const styles = styling(theme);
 
 	const {
 		data: posts,
@@ -71,18 +75,19 @@ export default function FeedFavoriteList() {
 		/>
 	);
 }
-const styles = StyleSheet.create({
-	contentContainer: {
-		padding: 15,
-	},
-	emptyContainer: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	emptyText: {
-		fontSize: 16,
-		textAlign: 'center',
-		color: colors.GRAY_500,
-	},
-});
+const styling = (theme: ThemeMode) =>
+	StyleSheet.create({
+		contentContainer: {
+			padding: 15,
+		},
+		emptyContainer: {
+			flex: 1,
+			justifyContent: 'center',
+			alignItems: 'center',
+		},
+		emptyText: {
+			fontSize: 16,
+			textAlign: 'center',
+			color: colors[theme].GRAY_500,
+		},
+	});

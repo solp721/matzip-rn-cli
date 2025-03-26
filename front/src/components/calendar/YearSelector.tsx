@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, FlatList, Pressable } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { IconProps } from 'react-native-vector-icons/Icon';
 import React, { useEffect, useState } from 'react';
+import useThemeStorage from '@/hooks/useThemeStorage';
+import { ThemeMode } from '@/types';
 
 const MaterialIcon = MaterialIcons as unknown as React.ComponentType<IconProps>;
 
@@ -19,6 +21,8 @@ export default function YearSelector({
 	onChangeYear,
 	hide,
 }: YearSelectorProps) {
+	const { theme } = useThemeStorage();
+	const styles = styling(theme);
 	const [scroolY, setScroolY] = useState(0);
 
 	useEffect(() => {
@@ -76,7 +80,7 @@ export default function YearSelector({
 					</View>
 					<Pressable style={styles.closeButton} onPress={hide}>
 						<Text style={styles.closeText}>닫기</Text>
-						<MaterialIcon name="close" size={20} color={colors.BLACK} />
+						<MaterialIcon name="close" size={20} color={colors[theme].BLACK} />
 					</Pressable>
 				</View>
 			)}
@@ -84,57 +88,58 @@ export default function YearSelector({
 	);
 }
 
-const styles = StyleSheet.create({
-	container: {
-		position: 'absolute',
-		width: '100%',
-	},
-	yearsContainer: {
-		alignItems: 'center',
-		backgroundColor: colors.WHITE,
-	},
-	scrollContainer: {
-		maxHeight: 200,
-		backgroundColor: colors.WHITE,
-	},
-	yearButton: {
-		width: 80,
-		height: 40,
-		padding: 10,
-		margin: 5,
-		borderWidth: 1,
-		borderColor: colors.GRAY_500,
-		borderRadius: 2,
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-	yearText: {
-		fontSize: 16,
-		fontWeight: '500',
-		color: colors.GRAY_700,
-	},
-	currentYearButton: {
-		backgroundColor: colors.PINK_700,
-		borderColor: colors.PINK_700,
-	},
-	currentYearText: {
-		color: colors.WHITE,
-		fontWeight: '600',
-	},
-	closeButton: {
-		flex: 1,
-		flexDirection: 'row',
-		backgroundColor: colors.WHITE,
-		padding: 15,
-		alignItems: 'center',
-		justifyContent: 'center',
-		borderTopWidth: 1,
-		borderBottomWidth: 1,
-		borderColor: colors.GRAY_500,
-	},
-	closeText: {
-		fontSize: 16,
-		fontWeight: '600',
-		color: colors.BLACK,
-	},
-});
+const styling = (theme: ThemeMode) =>
+	StyleSheet.create({
+		container: {
+			position: 'absolute',
+			width: '100%',
+		},
+		yearsContainer: {
+			alignItems: 'center',
+			backgroundColor: colors[theme].WHITE,
+		},
+		scrollContainer: {
+			maxHeight: 200,
+			backgroundColor: colors[theme].WHITE,
+		},
+		yearButton: {
+			width: 80,
+			height: 40,
+			padding: 10,
+			margin: 5,
+			borderWidth: 1,
+			borderColor: colors[theme].GRAY_500,
+			borderRadius: 2,
+			alignItems: 'center',
+			justifyContent: 'center',
+		},
+		yearText: {
+			fontSize: 16,
+			fontWeight: '500',
+			color: colors[theme].GRAY_700,
+		},
+		currentYearButton: {
+			backgroundColor: colors[theme].PINK_700,
+			borderColor: colors[theme].PINK_700,
+		},
+		currentYearText: {
+			color: colors[theme].WHITE,
+			fontWeight: '600',
+		},
+		closeButton: {
+			flex: 1,
+			flexDirection: 'row',
+			backgroundColor: colors[theme].WHITE,
+			padding: 15,
+			alignItems: 'center',
+			justifyContent: 'center',
+			borderTopWidth: 1,
+			borderBottomWidth: 1,
+			borderColor: colors[theme].GRAY_500,
+		},
+		closeText: {
+			fontSize: 16,
+			fontWeight: '600',
+			color: colors[theme].BLACK,
+		},
+	});

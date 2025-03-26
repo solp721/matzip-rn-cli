@@ -21,6 +21,8 @@ import appleAuth, {
 } from '@invertase/react-native-apple-authentication';
 import { useAuth } from '@/hooks/queries/useAuth';
 import Toast from 'react-native-toast-message';
+import useThemeStorage from '@/hooks/useThemeStorage';
+import { ThemeMode } from '@/types';
 
 const IonIcon = IonIcons as unknown as React.ComponentType<IconProps>;
 
@@ -30,7 +32,9 @@ type AuthHomeScreenProps = StackScreenProps<
 >;
 
 export default function AuthHomeScreen({ navigation }: AuthHomeScreenProps) {
+	const { theme } = useThemeStorage();
 	const { appleLoginMutation } = useAuth();
+	const styles = styling(theme);
 
 	const handlePressAppleLogin = async () => {
 		try {
@@ -102,40 +106,41 @@ export default function AuthHomeScreen({ navigation }: AuthHomeScreenProps) {
 	);
 }
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		alignItems: 'center',
-		marginVertical: 30,
-		marginHorizontal: 30,
-	},
-	imageContainer: {
-		flex: 1.5,
-		width: Dimensions.get('screen').width / 2,
-	},
-	image: {
-		width: '100%',
-		height: '100%',
-	},
-	buttonContainer: {
-		flex: 1,
-		alignItems: 'center',
-		gap: 10,
-	},
-	kakaoButtonContainer: {
-		backgroundColor: '#fEE503',
-	},
-	kakaoButtonText: {
-		color: '#181600',
-	},
-	emailText: {
-		textDecorationLine: 'underline',
-		fontWeight: '500',
-		padding: 10,
-		color: colors.BLACK,
-	},
-	appleButton: {
-		width: Dimensions.get('screen').width - 60,
-		height: 45,
-	},
-});
+const styling = (theme: ThemeMode) =>
+	StyleSheet.create({
+		container: {
+			flex: 1,
+			alignItems: 'center',
+			marginVertical: 30,
+			marginHorizontal: 30,
+		},
+		imageContainer: {
+			flex: 1.5,
+			width: Dimensions.get('screen').width / 2,
+		},
+		image: {
+			width: '100%',
+			height: '100%',
+		},
+		buttonContainer: {
+			flex: 1,
+			alignItems: 'center',
+			gap: 10,
+		},
+		kakaoButtonContainer: {
+			backgroundColor: '#fEE503',
+		},
+		kakaoButtonText: {
+			color: '#181600',
+		},
+		emailText: {
+			textDecorationLine: 'underline',
+			fontWeight: '500',
+			padding: 10,
+			color: colors[theme].BLACK,
+		},
+		appleButton: {
+			width: Dimensions.get('screen').width - 60,
+			height: 45,
+		},
+	});

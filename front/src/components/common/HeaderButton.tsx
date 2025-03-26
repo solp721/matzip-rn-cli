@@ -1,6 +1,8 @@
 import React, { ReactNode } from 'react';
 import { Pressable, StyleSheet, Text, PressableProps } from 'react-native';
 import { colors } from '@/constants/colors';
+import useThemeStorage from '@/hooks/useThemeStorage';
+import { ThemeMode } from '@/types';
 
 interface HeaderButtonProps extends PressableProps {
 	labelText?: string;
@@ -14,6 +16,9 @@ export default function HeaderButton({
 	hasError = false,
 	...props
 }: HeaderButtonProps) {
+	const { theme } = useThemeStorage();
+	const styles = styling(theme);
+
 	return (
 		<Pressable disabled={hasError} style={styles.container} {...props}>
 			{!labelText && icon}
@@ -26,19 +31,20 @@ export default function HeaderButton({
 	);
 }
 
-const styles = StyleSheet.create({
-	container: {
-		height: '100%',
-		justifyContent: 'center',
-		alignItems: 'center',
-		paddingHorizontal: 10,
-	},
-	text: {
-		fontSize: 15,
-		fontWeight: '500',
-		color: colors.PINK_700,
-	},
-	textError: {
-		color: colors.GRAY_200,
-	},
-});
+const styling = (theme: ThemeMode) =>
+	StyleSheet.create({
+		container: {
+			height: '100%',
+			justifyContent: 'center',
+			alignItems: 'center',
+			paddingHorizontal: 10,
+		},
+		text: {
+			fontSize: 15,
+			fontWeight: '500',
+			color: colors[theme].PINK_700,
+		},
+		textError: {
+			color: colors[theme].GRAY_200,
+		},
+	});

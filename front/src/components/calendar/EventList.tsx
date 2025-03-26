@@ -14,6 +14,8 @@ import React from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CompositeNavigationProp } from '@react-navigation/native';
+import useThemeStorage from '@/hooks/useThemeStorage';
+import { ThemeMode } from '@/types';
 
 interface EventListProps {
 	posts: CalendarPost[];
@@ -25,8 +27,10 @@ type Navigation = CompositeNavigationProp<
 >;
 
 export default function EventList({ posts }: EventListProps) {
+	const { theme } = useThemeStorage();
 	const insets = useSafeAreaInsets();
 	const navigation = useNavigation<Navigation>();
+	const styles = styling(theme);
 
 	const handlePressItem = (id: number) => {
 		navigation.navigate(mainDrawerNavigations.FEED, {
@@ -68,34 +72,35 @@ export default function EventList({ posts }: EventListProps) {
 	);
 }
 
-const styles = StyleSheet.create({
-	container: {
-		backgroundColor: colors.WHITE,
-		padding: 20,
-	},
-	innerContainer: {
-		gap: 20,
-	},
-	itemContainer: {
-		flexDirection: 'row',
-	},
-	itemHeader: {
-		backgroundColor: colors.PINK_700,
-		width: 6,
-		height: 50,
-		marginRight: 8,
-		borderRadius: 20,
-	},
-	infoContainer: {
-		justifyContent: 'space-evenly',
-	},
-	addressText: {
-		color: colors.GRAY_500,
-		fontSize: 13,
-	},
-	titleText: {
-		color: colors.BLACK,
-		fontSize: 16,
-		fontWeight: '600',
-	},
-});
+const styling = (theme: ThemeMode) =>
+	StyleSheet.create({
+		container: {
+			backgroundColor: colors[theme].WHITE,
+			padding: 20,
+		},
+		innerContainer: {
+			gap: 20,
+		},
+		itemContainer: {
+			flexDirection: 'row',
+		},
+		itemHeader: {
+			backgroundColor: colors[theme].PINK_700,
+			width: 6,
+			height: 50,
+			marginRight: 8,
+			borderRadius: 20,
+		},
+		infoContainer: {
+			justifyContent: 'space-evenly',
+		},
+		addressText: {
+			color: colors[theme].GRAY_500,
+			fontSize: 13,
+		},
+		titleText: {
+			color: colors[theme].BLACK,
+			fontSize: 16,
+			fontWeight: '600',
+		},
+	});

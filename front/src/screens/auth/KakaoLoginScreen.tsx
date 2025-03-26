@@ -15,12 +15,16 @@ import WebView, {
 	WebViewMessageEvent,
 	WebViewNavigation,
 } from 'react-native-webview';
+import useThemeStorage from '@/hooks/useThemeStorage';
+import { ThemeMode } from '@/types';
 
 const REDIRECT_URI = `${
 	Platform.OS === 'ios' ? 'http://localhost:3030/' : 'http://10.0.2.2:3030/'
 }auth/oauth/kakao`;
 
 export default function KakaoLoginScreen() {
+	const { theme } = useThemeStorage();
+	const styles = styling(theme);
 	const { kakaoLoginMutation } = useAuth();
 	const [isLoading, setIsLoading] = useState(false);
 	const [isChangeNavigate, setIsChangeNavigate] = useState(true);
@@ -56,7 +60,7 @@ export default function KakaoLoginScreen() {
 		<SafeAreaView style={styles.container}>
 			{(isLoading || isChangeNavigate) && (
 				<View style={styles.kakaoLoginLoadingContainer}>
-					<ActivityIndicator size="large" color={colors.BLACK} />
+					<ActivityIndicator size="large" color={colors[theme].BLACK} />
 				</View>
 			)}
 			<WebView
@@ -71,15 +75,16 @@ export default function KakaoLoginScreen() {
 	);
 }
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-	},
-	kakaoLoginLoadingContainer: {
-		backgroundColor: colors.WHITE,
-		height: Dimensions.get('screen').height,
-		paddingBottom: 100,
-		alignItems: 'center',
-		justifyContent: 'center',
-	},
-});
+const styling = (theme: ThemeMode) =>
+	StyleSheet.create({
+		container: {
+			flex: 1,
+		},
+		kakaoLoginLoadingContainer: {
+			backgroundColor: colors[theme].WHITE,
+			height: Dimensions.get('screen').height,
+			paddingBottom: 100,
+			alignItems: 'center',
+			justifyContent: 'center',
+		},
+	});

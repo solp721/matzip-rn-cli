@@ -9,7 +9,7 @@ import { StyleSheet, SafeAreaView, ScrollView, View } from 'react-native';
 import { IconProps } from 'react-native-vector-icons/Icon';
 import OctIcons from 'react-native-vector-icons/Octicons';
 import DarkModeOption from '@/components/setting/DarkModeOption';
-
+import useThemeStorage from '@/hooks/useThemeStorage';
 const OctIcon = OctIcons as unknown as React.ComponentType<IconProps>;
 
 type SettingHomeScreenProps = StackScreenProps<SettingStackParamList>;
@@ -17,6 +17,7 @@ type SettingHomeScreenProps = StackScreenProps<SettingStackParamList>;
 export default function SettingHomeScreen({
 	navigation,
 }: SettingHomeScreenProps) {
+	const { theme } = useThemeStorage();
 	const { logoutMutation } = useAuth();
 	const darkModeOption = useModal();
 
@@ -46,8 +47,10 @@ export default function SettingHomeScreen({
 				<View style={styles.space} />
 				<SettingItem
 					title="로그아웃"
-					color={colors.RED_500}
-					icon={<OctIcon name="sign-out" size={16} color={colors.RED_500} />}
+					color={colors[theme].RED_500}
+					icon={
+						<OctIcon name="sign-out" size={16} color={colors[theme].RED_500} />
+					}
 					onPress={handlePressLogout}
 				/>
 			</ScrollView>

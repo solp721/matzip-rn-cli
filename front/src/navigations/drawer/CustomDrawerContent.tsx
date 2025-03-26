@@ -17,6 +17,8 @@ import { colors, mainDrawerNavigations, settingNavigations } from '@/constants';
 import { useAuth } from '@/hooks/queries/useAuth';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { IconProps } from 'react-native-vector-icons/Icon';
+import useThemeStorage from '@/hooks/useThemeStorage';
+import { ThemeMode } from '@/types';
 
 const MaterialIcon = MaterialIcons as unknown as React.ComponentType<IconProps>;
 
@@ -30,6 +32,8 @@ interface ProfileData {
 export default function CustomDrawerContent(
 	props: DrawerContentComponentProps,
 ) {
+	const { theme } = useThemeStorage();
+	const styles = styling(theme);
 	const { getProfileQuery } = useAuth();
 	const { email, nickname, imageUri, kakaoImageUri } =
 		(getProfileQuery.data as ProfileData) || {};
@@ -90,7 +94,11 @@ export default function CustomDrawerContent(
 			</DrawerContentScrollView>
 			<View style={styles.bottomContainer}>
 				<Pressable style={styles.bottomMenu} onPress={handlePressSettings}>
-					<MaterialIcon name={'settings'} size={18} color={colors.GRAY_700} />
+					<MaterialIcon
+						name={'settings'}
+						size={18}
+						color={colors[theme].GRAY_700}
+					/>
 					<Text style={styles.bottomMenuText}>설정</Text>
 				</Pressable>
 			</View>
@@ -98,51 +106,52 @@ export default function CustomDrawerContent(
 	);
 }
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-	},
-	contentContainer: {
-		backgroundColor: colors.WHITE,
-	},
-	nameText: {
-		color: colors.BLACK,
-		fontSize: 16,
-		fontWeight: 'bold',
-	},
-	userInfoContainer: {
-		alignItems: 'center',
-		marginTop: 15,
-		marginBottom: 30,
-		marginHorizontal: 15,
-	},
-	userImage: {
-		width: '100%',
-		height: '100%',
-		borderRadius: 35,
-	},
-	userImageContainer: {
-		width: 70,
-		height: 70,
-		borderRadius: 35,
-		marginBottom: 10,
-	},
-	bottomContainer: {
-		flexDirection: 'row',
-		justifyContent: 'flex-end',
-		paddingHorizontal: 20,
-		paddingVertical: 25,
-		borderTopWidth: 1,
-		borderTopColor: colors.GRAY_200,
-	},
-	bottomMenu: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		gap: 5,
-	},
-	bottomMenuText: {
-		fontSize: 15,
-		fontWeight: '600',
-		color: colors.GRAY_700,
-	},
-});
+const styling = (theme: ThemeMode) =>
+	StyleSheet.create({
+		container: {
+			flex: 1,
+		},
+		contentContainer: {
+			backgroundColor: colors[theme].WHITE,
+		},
+		nameText: {
+			color: colors[theme].BLACK,
+			fontSize: 16,
+			fontWeight: 'bold',
+		},
+		userInfoContainer: {
+			alignItems: 'center',
+			marginTop: 15,
+			marginBottom: 30,
+			marginHorizontal: 15,
+		},
+		userImage: {
+			width: '100%',
+			height: '100%',
+			borderRadius: 35,
+		},
+		userImageContainer: {
+			width: 70,
+			height: 70,
+			borderRadius: 35,
+			marginBottom: 10,
+		},
+		bottomContainer: {
+			flexDirection: 'row',
+			justifyContent: 'flex-end',
+			paddingHorizontal: 20,
+			paddingVertical: 25,
+			borderTopWidth: StyleSheet.hairlineWidth,
+			borderTopColor: colors[theme].GRAY_200,
+		},
+		bottomMenu: {
+			flexDirection: 'row',
+			alignItems: 'center',
+			gap: 5,
+		},
+		bottomMenuText: {
+			fontSize: 15,
+			fontWeight: '600',
+			color: colors[theme].GRAY_700,
+		},
+	});

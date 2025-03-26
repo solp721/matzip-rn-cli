@@ -32,6 +32,7 @@ import { FeedStackParamList } from '@/navigations/stack/FeedStackNavigator';
 import { StackNavigationProp } from '@react-navigation/stack';
 import useDetailStore from '@/store/useDetailPostStore';
 import useMutateUpdatePost from '@/hooks/queries/useMutateUpdatePost';
+import useThemeStorage from '@/hooks/useThemeStorage';
 
 const OctIcon = Octicons as unknown as React.ComponentType<IconProps>;
 
@@ -41,6 +42,7 @@ type PostFormProps = {
 };
 
 export default function PostForm({ location, isEdit = false }: PostFormProps) {
+	const { theme } = useThemeStorage();
 	const navigation = useNavigation<StackNavigationProp<FeedStackParamList>>();
 	const descriptionRef = useRef<TextInput | null>(null);
 	const createPost = useMutateCreatePost();
@@ -133,7 +135,13 @@ export default function PostForm({ location, isEdit = false }: PostFormProps) {
 					<InputField
 						value={address}
 						disabled
-						icon={<OctIcon name="location" size={24} color={colors.GRAY_500} />}
+						icon={
+							<OctIcon
+								name="location"
+								size={24}
+								color={colors[theme].GRAY_500}
+							/>
+						}
 					/>
 					<CustomButton
 						variant="outlined"

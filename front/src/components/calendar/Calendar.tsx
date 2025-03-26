@@ -12,6 +12,8 @@ import YearSelector from './YearSelector';
 import { useNavigation } from '@react-navigation/native';
 import useModal from '@/hooks/useModal';
 import CalendarHomeHeaderRight from './CalendarHomeHeaderRight';
+import useThemeStorage from '@/hooks/useThemeStorage';
+import { ThemeMode } from '@/types';
 
 const Ionicon = Ionicons as unknown as React.ComponentType<IconProps>;
 const MaterialIcon = MaterialIcons as unknown as React.ComponentType<IconProps>;
@@ -33,6 +35,8 @@ export default function Calendar<T>({
 	schedules,
 	moveToToday,
 }: CalendarProps<T>) {
+	const { theme } = useThemeStorage();
+	const styles = styling(theme);
 	const { month, year, firstDow, lastDate } = monthYear;
 	const navigation = useNavigation();
 	const yearSelector = useModal();
@@ -55,7 +59,7 @@ export default function Calendar<T>({
 					style={styles.monthButtonContainer}
 					onPress={() => onChangeMonth(-1)}
 				>
-					<Ionicon name="arrow-back" size={25} color={colors.BLACK} />
+					<Ionicon name="arrow-back" size={25} color={colors[theme].BLACK} />
 				</Pressable>
 				<Pressable
 					style={styles.monthYearContainer}
@@ -65,14 +69,14 @@ export default function Calendar<T>({
 					<MaterialIcon
 						name="keyboard-arrow-down"
 						size={20}
-						color={colors.GRAY_500}
+						color={colors[theme].GRAY_500}
 					/>
 				</Pressable>
 				<Pressable
 					style={styles.monthButtonContainer}
 					onPress={() => onChangeMonth(1)}
 				>
-					<Ionicon name="arrow-forward" size={25} color={colors.BLACK} />
+					<Ionicon name="arrow-forward" size={25} color={colors[theme].BLACK} />
 				</Pressable>
 			</View>
 			<DayOfWeek />
@@ -105,30 +109,31 @@ export default function Calendar<T>({
 	);
 }
 
-const styles = StyleSheet.create({
-	headerContainer: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		marginHorizontal: 25,
-		marginTop: 16,
-	},
-	monthButtonContainer: {
-		padding: 10,
-	},
-	monthYearContainer: {
-		padding: 10,
-		flexDirection: 'row',
-		alignItems: 'center',
-	},
-	titleText: {
-		fontSize: 18,
-		fontWeight: '500',
-		color: colors.BLACK,
-	},
-	bodyContainer: {
-		borderBottomWidth: StyleSheet.hairlineWidth,
-		borderBottomColor: colors.GRAY_300,
-		backgroundColor: colors.GRAY_100,
-	},
-});
+const styling = (theme: ThemeMode) =>
+	StyleSheet.create({
+		headerContainer: {
+			flexDirection: 'row',
+			justifyContent: 'space-between',
+			alignItems: 'center',
+			marginHorizontal: 25,
+			marginTop: 16,
+		},
+		monthButtonContainer: {
+			padding: 10,
+		},
+		monthYearContainer: {
+			padding: 10,
+			flexDirection: 'row',
+			alignItems: 'center',
+		},
+		titleText: {
+			fontSize: 18,
+			fontWeight: '500',
+			color: colors[theme].BLACK,
+		},
+		bodyContainer: {
+			borderBottomWidth: StyleSheet.hairlineWidth,
+			borderBottomColor: colors[theme].GRAY_300,
+			backgroundColor: colors[theme].GRAY_100,
+		},
+	});

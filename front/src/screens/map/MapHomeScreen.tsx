@@ -29,6 +29,8 @@ import useMoveMapView from '@/hooks/useMoveMapView';
 import Toast from 'react-native-toast-message';
 import useLocationStore from '@/store/useLocationStore';
 import useThemeStorage from '@/hooks/useThemeStorage';
+import { ThemeMode } from '@/types';
+
 type Navigation = CompositeNavigationProp<
 	StackNavigationProp<MapStackParamList>,
 	DrawerNavigationProp<MainDrawerParamList>
@@ -39,6 +41,7 @@ const MaterialIcon = MaterialIcons as unknown as React.ComponentType<IconProps>;
 
 export default function MapHomeScreen() {
 	const { theme } = useThemeStorage();
+	const styles = styling(theme);
 	const inset = useSafeAreaInsets();
 	const navigation = useNavigation<Navigation>();
 	const { userLocation, isUserLocationError } = useUserLocation();
@@ -122,17 +125,21 @@ export default function MapHomeScreen() {
 				style={[styles.drawerButton, { top: inset.top || 20 }]}
 				onPress={() => navigation.openDrawer()}
 			>
-				<IonIcon name="menu" size={25} color={colors.WHITE} />
+				<IonIcon name="menu" size={25} color={colors[theme].WHITE} />
 			</Pressable>
 			<View style={styles.buttonList}>
 				<Pressable style={styles.mapButton} onPress={handlePressAddPost}>
-					<MaterialIcon name="add" size={25} color={colors.WHITE} />
+					<MaterialIcon name="add" size={25} color={colors[theme].WHITE} />
 				</Pressable>
 				<Pressable style={styles.mapButton} onPress={handlePressSearch}>
-					<MaterialIcon name="search" size={25} color={colors.WHITE} />
+					<MaterialIcon name="search" size={25} color={colors[theme].WHITE} />
 				</Pressable>
 				<Pressable style={styles.mapButton} onPress={handlePressUserLocation}>
-					<MaterialIcon name="my-location" size={25} color={colors.WHITE} />
+					<MaterialIcon
+						name="my-location"
+						size={25}
+						color={colors[theme].WHITE}
+					/>
 				</Pressable>
 			</View>
 			<MarkerModal
@@ -143,40 +150,41 @@ export default function MapHomeScreen() {
 		</>
 	);
 }
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-	},
-	drawerButton: {
-		position: 'absolute',
-		left: 0,
-		top: 20,
-		paddingVertical: 10,
-		paddingHorizontal: 12,
-		backgroundColor: colors.PINK_700,
-		borderTopRightRadius: 50,
-		borderBottomRightRadius: 50,
-		shadowColor: colors.BLACK,
-		shadowOffset: { width: 1, height: 1 },
-		shadowOpacity: 0.5,
-		elevation: 4,
-	},
-	buttonList: {
-		position: 'absolute',
-		bottom: 30,
-		right: 15,
-	},
-	mapButton: {
-		backgroundColor: colors.PINK_700,
-		marginVertical: 5,
-		height: 48,
-		width: 48,
-		alignItems: 'center',
-		justifyContent: 'center',
-		borderRadius: 30,
-		shadowColor: colors.BLACK,
-		shadowOffset: { width: 1, height: 2 },
-		shadowOpacity: 0.5,
-		elevation: 2,
-	},
-});
+const styling = (theme: ThemeMode) =>
+	StyleSheet.create({
+		container: {
+			flex: 1,
+		},
+		drawerButton: {
+			position: 'absolute',
+			left: 0,
+			top: 20,
+			paddingVertical: 10,
+			paddingHorizontal: 12,
+			backgroundColor: colors[theme].PINK_700,
+			borderTopRightRadius: 50,
+			borderBottomRightRadius: 50,
+			shadowColor: colors[theme].UNCHANGE_BLACK,
+			shadowOffset: { width: 1, height: 1 },
+			shadowOpacity: 0.5,
+			elevation: 4,
+		},
+		buttonList: {
+			position: 'absolute',
+			bottom: 30,
+			right: 15,
+		},
+		mapButton: {
+			backgroundColor: colors[theme].PINK_700,
+			marginVertical: 5,
+			height: 48,
+			width: 48,
+			alignItems: 'center',
+			justifyContent: 'center',
+			borderRadius: 30,
+			shadowColor: colors[theme].UNCHANGE_BLACK,
+			shadowOffset: { width: 1, height: 2 },
+			shadowOpacity: 0.5,
+			elevation: 2,
+		},
+	});

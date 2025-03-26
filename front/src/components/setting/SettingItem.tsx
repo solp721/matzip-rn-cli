@@ -6,8 +6,9 @@ import {
 	PressableProps,
 	View,
 } from 'react-native';
-
 import { colors } from '@/constants';
+import useThemeStorage from '@/hooks/useThemeStorage';
+import { ThemeMode } from '@/types';
 
 interface SettingItemProps extends PressableProps {
 	title: string;
@@ -23,6 +24,9 @@ export default function SettingItem({
 	color,
 	...props
 }: SettingItemProps) {
+	const { theme } = useThemeStorage();
+	const styles = styling(theme);
+
 	return (
 		<Pressable
 			style={({ pressed }) => [
@@ -33,7 +37,9 @@ export default function SettingItem({
 		>
 			{icon}
 			<View style={styles.titleContainer}>
-				<Text style={[styles.titleText, { color: color ?? colors.BLACK }]}>
+				<Text
+					style={[styles.titleText, { color: color ?? colors[theme].BLACK }]}
+				>
 					{title}
 				</Text>
 				{subTitle && <Text style={styles.subTitleText}>{subTitle}</Text>}
@@ -42,31 +48,32 @@ export default function SettingItem({
 	);
 }
 
-const styles = StyleSheet.create({
-	container: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		gap: 10,
-		padding: 15,
-		backgroundColor: colors.WHITE,
-		borderColor: colors.GRAY_200,
-		borderBottomWidth: StyleSheet.hairlineWidth,
-		borderTopWidth: StyleSheet.hairlineWidth,
-	},
-	pressedContainer: {
-		backgroundColor: colors.GRAY_200,
-	},
-	titleContainer: {
-		flex: 1,
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-	},
-	titleText: {
-		fontSize: 16,
-		fontWeight: '500',
-		color: colors.BLACK,
-	},
-	subTitleText: {
-		color: colors.GRAY_500,
-	},
-});
+const styling = (theme: ThemeMode) =>
+	StyleSheet.create({
+		container: {
+			flexDirection: 'row',
+			alignItems: 'center',
+			gap: 10,
+			padding: 15,
+			backgroundColor: colors[theme].WHITE,
+			borderColor: colors[theme].GRAY_200,
+			borderBottomWidth: StyleSheet.hairlineWidth,
+			borderTopWidth: StyleSheet.hairlineWidth,
+		},
+		pressedContainer: {
+			backgroundColor: colors[theme].GRAY_200,
+		},
+		titleContainer: {
+			flex: 1,
+			flexDirection: 'row',
+			justifyContent: 'space-between',
+		},
+		titleText: {
+			fontSize: 16,
+			fontWeight: '500',
+			color: colors[theme].BLACK,
+		},
+		subTitleText: {
+			color: colors[theme].GRAY_500,
+		},
+	});

@@ -5,8 +5,13 @@ import React from 'react';
 import { StyleSheet, View, Text, Alert } from 'react-native';
 import { alerts } from '@/constants';
 import Toast from 'react-native-toast-message';
+import useThemeStorage from '@/hooks/useThemeStorage';
+import { ThemeMode } from '@/types';
+
 export default function DeleteAccountScreen() {
+	const { theme } = useThemeStorage();
 	const { deleteAccountMutation } = useAuth();
+	const styles = styling(theme);
 
 	const handlePressDeleteAccount = () => {
 		Alert.alert(
@@ -63,25 +68,26 @@ export default function DeleteAccountScreen() {
 	);
 }
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		padding: 20,
-		marginBottom: 20,
-	},
-	infoContainer: {
-		alignItems: 'center',
-		marginTop: 10,
-		marginBottom: 30,
-		borderWidth: 1,
-		borderColor: colors.PINK_700,
-		borderRadius: 3,
-		padding: 10,
-		gap: 10,
-	},
-	infoText: {
-		color: colors.PINK_700,
-		fontSize: 15,
-		fontWeight: '600',
-	},
-});
+const styling = (theme: ThemeMode) =>
+	StyleSheet.create({
+		container: {
+			flex: 1,
+			padding: 20,
+			marginBottom: 20,
+		},
+		infoContainer: {
+			alignItems: 'center',
+			marginTop: 10,
+			marginBottom: 30,
+			borderWidth: 1,
+			borderColor: colors[theme].PINK_700,
+			borderRadius: 3,
+			padding: 10,
+			gap: 10,
+		},
+		infoText: {
+			color: colors[theme].PINK_700,
+			fontSize: 15,
+			fontWeight: '600',
+		},
+	});

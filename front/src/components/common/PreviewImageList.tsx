@@ -14,6 +14,8 @@ import { IconProps } from 'react-native-vector-icons/Icon';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { FeedStackParamList } from '@/navigations/stack/FeedStackNavigator';
 import { feedNavigations } from '@/constants';
+import useThemeStorage from '@/hooks/useThemeStorage';
+import { ThemeMode } from '@/types';
 
 interface PreviewImageListProps {
 	imageUris: ImageUri[];
@@ -33,6 +35,8 @@ export default function PreviewImageList({
 	zoomEnable = false,
 }: PreviewImageListProps) {
 	const navigation = useNavigation<NavigationProp<FeedStackParamList>>();
+	const { theme } = useThemeStorage();
+	const styles = styling(theme);
 
 	const handlePressImage = (index: number) => {
 		if (zoomEnable) {
@@ -64,7 +68,11 @@ export default function PreviewImageList({
 											style={[styles.imageButton, styles.deleteButton]}
 											onPress={() => onDelete && onDelete(uri)}
 										>
-											<IonIcon name={'close'} size={16} color={colors.WHITE} />
+											<IonIcon
+												name={'close'}
+												size={16}
+												color={colors[theme].WHITE}
+											/>
 										</Pressable>
 
 										{index > 0 && (
@@ -77,7 +85,7 @@ export default function PreviewImageList({
 												<IonIcon
 													name={'arrow-back-outline'}
 													size={16}
-													color={colors.WHITE}
+													color={colors[theme].WHITE}
 												/>
 											</Pressable>
 										)}
@@ -91,7 +99,7 @@ export default function PreviewImageList({
 												<IonIcon
 													name={'arrow-forward-outline'}
 													size={16}
-													color={colors.WHITE}
+													color={colors[theme].WHITE}
 												/>
 											</Pressable>
 										)}
@@ -106,35 +114,36 @@ export default function PreviewImageList({
 	);
 }
 
-const styles = StyleSheet.create({
-	container: {
-		flexDirection: 'row',
-		paddingHorizontal: 15,
-		gap: 15,
-	},
-	imageContainer: {
-		width: 70,
-		height: 70,
-	},
-	image: {
-		width: '100%',
-		height: '100%',
-	},
-	imageButton: {
-		position: 'absolute',
-		backgroundColor: colors.BLACK,
-		zIndex: 1,
-	},
-	deleteButton: {
-		top: 0,
-		right: 0,
-	},
-	moveLeftButton: {
-		bottom: 0,
-		left: 0,
-	},
-	moveRightButton: {
-		bottom: 0,
-		right: 0,
-	},
-});
+const styling = (theme: ThemeMode) =>
+	StyleSheet.create({
+		container: {
+			flexDirection: 'row',
+			paddingHorizontal: 15,
+			gap: 15,
+		},
+		imageContainer: {
+			width: 70,
+			height: 70,
+		},
+		image: {
+			width: '100%',
+			height: '100%',
+		},
+		imageButton: {
+			position: 'absolute',
+			backgroundColor: colors[theme].BLACK,
+			zIndex: 1,
+		},
+		deleteButton: {
+			top: 0,
+			right: 0,
+		},
+		moveLeftButton: {
+			bottom: 0,
+			left: 0,
+		},
+		moveRightButton: {
+			bottom: 0,
+			right: 0,
+		},
+	});

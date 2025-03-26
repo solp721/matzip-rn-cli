@@ -14,6 +14,8 @@ import { colors, feedNavigations } from '@/constants';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { FeedStackParamList } from '@/navigations/stack/FeedStackNavigator';
+import { ThemeMode } from '@/types';
+import useThemeStorage from '@/hooks/useThemeStorage';
 
 interface FeedItemProps {
 	post: ResponsePost;
@@ -24,6 +26,8 @@ type Navigation = StackNavigationProp<FeedStackParamList>;
 
 export default function FeedItem({ post, onPress }: FeedItemProps) {
 	const navigation = useNavigation<Navigation>();
+	const { theme } = useThemeStorage();
+	const styles = styling(theme);
 
 	const handlePressFeed = () => {
 		if (onPress) {
@@ -71,44 +75,46 @@ export default function FeedItem({ post, onPress }: FeedItemProps) {
 		</Pressable>
 	);
 }
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		margin: 5,
-		marginVertical: 12,
-	},
-	imageContainer: {
-		width: Dimensions.get('screen').width / 2 - 25,
-		height: Dimensions.get('screen').width / 2 - 25,
-	},
-	image: {
-		width: '100%',
-		height: '100%',
-		borderRadius: 5,
-	},
-	emptyImageContainer: {
-		justifyContent: 'center',
-		alignItems: 'center',
-		borderColor: colors.GRAY_500,
-		borderRadius: 5,
-		borderWidth: 1,
-	},
-	textContainer: {
-		marginTop: 7,
-		gap: 2,
-	},
-	dateText: {
-		fontSize: 12,
-		fontWeight: '500',
-		color: colors.PINK_700,
-	},
-	titleText: {
-		color: colors.BLACK,
-		fontSize: 13,
-		fontWeight: '600',
-	},
-	descriptionText: {
-		fontSize: 13,
-		color: colors.GRAY_500,
-	},
-});
+
+const styling = (theme: ThemeMode) =>
+	StyleSheet.create({
+		container: {
+			flex: 1,
+			margin: 5,
+			marginVertical: 12,
+		},
+		imageContainer: {
+			width: Dimensions.get('screen').width / 2 - 25,
+			height: Dimensions.get('screen').width / 2 - 25,
+		},
+		image: {
+			width: '100%',
+			height: '100%',
+			borderRadius: 5,
+		},
+		emptyImageContainer: {
+			justifyContent: 'center',
+			alignItems: 'center',
+			borderColor: colors[theme].GRAY_500,
+			borderRadius: 5,
+			borderWidth: 1,
+		},
+		textContainer: {
+			marginTop: 7,
+			gap: 2,
+		},
+		dateText: {
+			fontSize: 12,
+			fontWeight: '500',
+			color: colors[theme].PINK_700,
+		},
+		titleText: {
+			color: colors[theme].BLACK,
+			fontSize: 13,
+			fontWeight: '600',
+		},
+		descriptionText: {
+			fontSize: 13,
+			color: colors[theme].GRAY_500,
+		},
+	});

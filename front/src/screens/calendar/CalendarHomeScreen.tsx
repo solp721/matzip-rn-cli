@@ -5,8 +5,12 @@ import useGetCalendarPosts from '@/hooks/queries/useGetCalendarPosts';
 import { getMonthYearDetails, getNewMonthYear } from '@/utils';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
+import useThemeStorage from '@/hooks/useThemeStorage';
+import { ThemeMode } from '@/types';
 
 function CalendarHomeScreen() {
+	const { theme } = useThemeStorage();
+	const styles = styling(theme);
 	const currentMonthYear = getMonthYearDetails(new Date());
 	const [monthYear, setMonthYear] = useState(currentMonthYear);
 	const [selectedDate, setSelectedDate] = useState(0);
@@ -61,11 +65,12 @@ function CalendarHomeScreen() {
 	);
 }
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: colors.WHITE,
-	},
-});
+const styling = (theme: ThemeMode) =>
+	StyleSheet.create({
+		container: {
+			flex: 1,
+			backgroundColor: colors[theme].WHITE,
+		},
+	});
 
 export default CalendarHomeScreen;
