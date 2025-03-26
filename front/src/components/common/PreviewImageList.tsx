@@ -14,6 +14,7 @@ import { IconProps } from 'react-native-vector-icons/Icon';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { FeedStackParamList } from '@/navigations/stack/FeedStackNavigator';
 import { feedNavigations } from '@/constants';
+
 interface PreviewImageListProps {
 	imageUris: ImageUri[];
 	onDelete: (uri: string) => void;
