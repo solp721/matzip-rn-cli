@@ -22,7 +22,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { SettingStackParamList } from '@/navigations/stack/SettingStackNavigator';
 import EditProfileHeaderRight from '@/components/setting/EditProfileHeaderRight';
 import Toast from 'react-native-toast-message';
-
+import { settingNavigations } from '@/constants';
 const IonIcon = IonIcons as unknown as React.ComponentType<IconProps>;
 
 interface ProfileData {
@@ -139,7 +139,10 @@ export default function EditProfileScreen({
 				touched={editProfile.touched.nickname}
 				placeholder="닉네임을 입력해주세요."
 			/>
-			<Pressable style={styles.deleteAccountContainer}>
+			<Pressable
+				style={styles.deleteAccountContainer}
+				onPress={() => navigation.navigate(settingNavigations.DELETE_ACCOUNT)}
+			>
 				<IonIcon name="remove-circle-sharp" size={18} color={colors.RED_500} />
 				<Text style={styles.deleteAccountText}>회원탈퇴</Text>
 			</Pressable>
