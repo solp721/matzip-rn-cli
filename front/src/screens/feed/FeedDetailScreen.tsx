@@ -4,6 +4,7 @@ import {
 	feedNavigations,
 	mainDrawerNavigations,
 	mapNavigations,
+	settingNavigations,
 } from '@/constants';
 import useGetPost from '@/hooks/queries/useGetPost';
 import { FeedStackParamList } from '@/navigations/stack/FeedStackNavigator';
@@ -35,6 +36,7 @@ import useModal from '@/hooks/useModal';
 import FeedDetailOption from '@/components/feed/FeedDetailOption';
 import useDetailStore from '@/store/useDetailPostStore';
 import useMutateFavoritePost from '@/hooks/queries/useMutateFavoritePost';
+import { useAuth } from '@/hooks/queries/useAuth';
 
 type FeedDetailScreenProps = CompositeScreenProps<
 	StackScreenProps<FeedStackParamList, typeof feedNavigations.FEED_DETAIL>,
@@ -50,6 +52,8 @@ export default function FeedDetailScreen({
 }: FeedDetailScreenProps) {
 	const { id } = route.params;
 	const { data: post, isPending, isError } = useGetPost(id);
+	const { getProfileQuery } = useAuth();
+	const { categories } = getProfileQuery.data || {};
 	const insets = useSafeAreaInsets();
 	const { setMoveLocation } = useLocationStore();
 	const detailOption = useModal();
@@ -76,6 +80,13 @@ export default function FeedDetailScreen({
 
 	const handlePressFavorite = () => {
 		favoriteMutation.mutate(post.id);
+	};
+
+	const handlePressCategory = () => {
+		navigation.navigate(mainDrawerNavigations.SETTING, {
+			screen: settingNavigations.EDIT_CATEGORY,
+			initial: false,
+		});
 	};
 
 	return (
@@ -160,6 +171,21 @@ export default function FeedDetailScreen({
 										{ backgroundColor: colorHex[post.color] },
 									]}
 								/>
+							</View>
+							<View style={styles.infoColumn}>
+								<Text style={styles.infoColumnKeyText}>카테고리</Text>
+								{categories?.[post.color] ? (
+									<Text style={styles.infoColumnValueText}>
+										{categories?.[post.color]}
+									</Text>
+								) : (
+									<Pressable
+										style={styles.emptyCategoryContainer}
+										onPress={handlePressCategory}
+									>
+										<Text style={styles.infoColumnKeyText}>미설정</Text>
+									</Pressable>
+								)}
 							</View>
 						</View>
 					</View>
@@ -331,5 +357,12 @@ const styles = StyleSheet.create({
 	},
 	bookmarkPressedContainer: {
 		opacity: 0.5,
+	},
+	emptyCategoryContainer: {
+		alignItems: 'center',
+		justifyContent: 'center',
+		borderColor: colors.GRAY_300,
+		padding: 2,
+		borderRadius: 2,
 	},
 });
