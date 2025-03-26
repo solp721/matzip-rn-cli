@@ -20,7 +20,7 @@ import usePermission from '@/hooks/usePermission';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { IconProps } from 'react-native-vector-icons/Icon';
-import { mapStyle } from '@/style/mapStyle';
+import getMapStyle from '@/style/mapStyle';
 import CustomMarker from '@/components/common/CustomMarker';
 import useGetMarkers from '@/hooks/queries/useGetMarkers';
 import MarkerModal from '@/components/map/MarkerModal';
@@ -28,7 +28,7 @@ import useModal from '@/hooks/useModal';
 import useMoveMapView from '@/hooks/useMoveMapView';
 import Toast from 'react-native-toast-message';
 import useLocationStore from '@/store/useLocationStore';
-
+import useThemeStorage from '@/hooks/useThemeStorage';
 type Navigation = CompositeNavigationProp<
 	StackNavigationProp<MapStackParamList>,
 	DrawerNavigationProp<MainDrawerParamList>
@@ -38,6 +38,7 @@ const IonIcon = Ionicons as unknown as React.ComponentType<IconProps>;
 const MaterialIcon = MaterialIcons as unknown as React.ComponentType<IconProps>;
 
 export default function MapHomeScreen() {
+	const { theme } = useThemeStorage();
 	const inset = useSafeAreaInsets();
 	const navigation = useNavigation<Navigation>();
 	const { userLocation, isUserLocationError } = useUserLocation();
@@ -97,7 +98,7 @@ export default function MapHomeScreen() {
 				showsUserLocation
 				followsUserLocation
 				showsMyLocationButton={false}
-				customMapStyle={mapStyle}
+				customMapStyle={getMapStyle(theme)}
 				onLongPress={handleLongPressMapView}
 				onRegionChange={handleChangeDelta}
 				region={{
