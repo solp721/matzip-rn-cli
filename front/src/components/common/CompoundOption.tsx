@@ -11,6 +11,10 @@ import {
 	View,
 } from 'react-native';
 import { colors } from '@/constants';
+import IonIcons from 'react-native-vector-icons/Ionicons';
+import { IconProps } from 'react-native-vector-icons/Icon';
+
+const IonIcon = IonIcons as unknown as React.ComponentType<IconProps>;
 
 interface OptionContextValue {
 	onClickOutSide?: (event: GestureResponderEvent) => void;
@@ -73,9 +77,15 @@ function Container({ children }: PropsWithChildren) {
 interface ButtonProps extends PressableProps {
 	children: ReactNode;
 	isDanger?: boolean;
+	isChecked?: boolean;
 }
 
-function Button({ children, isDanger = false, ...props }: ButtonProps) {
+function Button({
+	children,
+	isDanger = false,
+	isChecked = false,
+	...props
+}: ButtonProps) {
 	return (
 		<Pressable
 			style={({ pressed }) => [
@@ -87,6 +97,9 @@ function Button({ children, isDanger = false, ...props }: ButtonProps) {
 			<Text style={[styles.optionText, isDanger && styles.dangerText]}>
 				{children}
 			</Text>
+			{isChecked && (
+				<IonIcon name="checkmark" size={20} color={colors.BLUE_500} />
+			)}
 		</Pressable>
 	);
 }
