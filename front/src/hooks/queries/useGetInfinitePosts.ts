@@ -1,26 +1,39 @@
 import {
 	InfiniteData,
-	QueryKey,
-	useInfiniteQuery,
 	UseInfiniteQueryOptions,
+	useSuspenseInfiniteQuery,
 } from '@tanstack/react-query';
 import { getPosts, ResponsePost } from '@/api/post';
 import { queryKeys } from '@/constants';
 import { ResponseError } from '@/types';
 
+type PostQueryKey = readonly [
+	typeof queryKeys.POST,
+	typeof queryKeys.GET_POSTS,
+];
+
 export default function useGetInfinitePosts(
-	queryOptions?: UseInfiniteQueryOptions<
+	queryOptions?: Omit<
+		UseInfiniteQueryOptions<
+			ResponsePost[],
+			ResponseError,
+			InfiniteData<ResponsePost[], number>,
+			ResponsePost[],
+			PostQueryKey,
+			number
+		>,
+		'queryKey' | 'queryFn' | 'initialPageParam' | 'getNextPageParam'
+	>,
+) {
+	return useSuspenseInfiniteQuery<
 		ResponsePost[],
 		ResponseError,
 		InfiniteData<ResponsePost[], number>,
-		ResponsePost[],
-		QueryKey,
+		PostQueryKey,
 		number
-	>,
-) {
-	return useInfiniteQuery({
+	>({
+		queryKey: [queryKeys.POST, queryKeys.GET_POSTS] as const,
 		queryFn: ({ pageParam }) => getPosts(pageParam),
-		queryKey: [queryKeys.POST, queryKeys.GET_POSTS],
 		initialPageParam: 1,
 		getNextPageParam: (lastPage, allPages) => {
 			const lastPost = lastPage[lastPage.length - 1];
