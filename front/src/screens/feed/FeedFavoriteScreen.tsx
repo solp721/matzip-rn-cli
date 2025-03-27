@@ -5,6 +5,7 @@ import FeedFavoriteList from '@/components/feed/FeedFavoriteList';
 import useThemeStorage from '@/hooks/useThemeStorage';
 import { ThemeMode } from '@/types';
 import Loader from '@/components/common/Loader';
+import RetryErrorBoundary from '@/components/common/RetryErrorBoundary';
 
 export default function FeedFavoriteScreen() {
 	const { theme } = useThemeStorage();
@@ -13,7 +14,9 @@ export default function FeedFavoriteScreen() {
 	return (
 		<SafeAreaView style={styles.container}>
 			<Suspense fallback={<Loader />}>
-				<FeedFavoriteList />
+				<RetryErrorBoundary>
+					<FeedFavoriteList />
+				</RetryErrorBoundary>
 			</Suspense>
 		</SafeAreaView>
 	);
